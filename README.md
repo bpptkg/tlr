@@ -1,6 +1,9 @@
 tlr
 ===
 
+WARNING: This project is DEPRECATED. Do not use it in any production
+environment!
+
 This script read temperature and CO2 gas measurements data
 from `192.168.10.102` port `2009` and insert it
 to `192.168.0.28` MySQL database.

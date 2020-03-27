@@ -22,7 +22,7 @@ LOGFILE = 'tlr.log'
 
 
 def tlr_wrt_sql(time1, line, idx):
-    db = MySQLdb.connect(host="192.168.0.28", port=3306, user="merapi1", passwd="merapi", db="geochemistry")
+    db = MySQLdb.connect(host="localhost", port=3306, user="user", passwd="secret", db="geochemistry")
     cursor = db.cursor()
     if idx == 0:
         sql = "INSERT INTO vgms_l530_0 (dtime, temp1, temp2, temp3, temp4, V_bat) \
