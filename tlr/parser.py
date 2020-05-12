@@ -1,7 +1,11 @@
 import re
 import abc
+import logging
 
-from .utils import force_str
+from .utils import force_str, get_value_or_none
+
+
+logger = logging.getLogger(__name__)
 
 
 class ParserError(Exception):
@@ -27,19 +31,23 @@ class BaseParser(object):
         Parse string s as list. Empty value will be discarded. If converter is
         not None, each value in the list will be converted using the converter
         function.
+
+        Note that this method always return a list of list of all items matched
+        in the regex.
         """
         cleaned_data = []
-        data = self.parse(s, **kwargs).split(delimiter)
+        data = self.parse(s, **kwargs)
         for item in data:
             d = []
-            for field in item:
+            for field in item.split(delimiter):
                 if not field:
                     continue
 
                 if converter is not None:
                     try:
                         value = converter(field)
-                    except ValueError:
+                    except ValueError as e:
+                        logger.error(e)
                         value = None
                 else:
                     value = force_str(field)
@@ -52,23 +60,23 @@ class BaseParser(object):
         """
         Parse string s as dictionary. Return truncated version if fields length
         less than or greater than list parsed.
+
+        Note that this method always return a list of dictionary of all items
+        matched in the regex.
         """
         if not self.fields:
             raise ParserError(
                 'Parsing as dictionary requires fields to be set')
 
+        cleaned_data = []
         data = self.parse_as_list(s, **kwargs)
-
-        def get_value_or_none(data, index):
-            try:
-                return data[index]
-            except IndexError:
-                return None
-
-        return dict([
-            (k, get_value_or_none(data, i))
-            for i, k in enumerate(self.fields)
-        ])
+        for item in data:
+            d = dict([
+                (k, get_value_or_none(item, i))
+                for i, k in enumerate(self.fields)
+            ])
+            cleaned_data.append(d)
+        return cleaned_data
 
 
 class TParser(BaseParser):
@@ -83,7 +91,6 @@ class T0Parser(TParser):
 
     regex = re.compile(r'.*#03\s(?P<data>.*)\r')
     fields = [
-        'timestamp',
         'temperature1',
         'temperature2',
         'temperature3',
@@ -95,20 +102,19 @@ class T0Parser(TParser):
 class T1Parser(TParser):
 
     regex = re.compile(r'.*#01\s(?P<data>.*)\r')
-    fields = ['timestamp', 'temperature', ]
+    fields = ['temperature', ]
 
 
 class T2Parser(BaseParser):
 
     regex = re.compile(r'.*#02\s(?P<data>.*)\r')
-    fields = ['timestamp', 'temperature', ]
+    fields = ['temperature', ]
 
 
 class EParser(BaseParser):
 
     regex = re.compile(r'.*TLR0101256\s(?P<data>.*)\r')
     fields = [
-        'timestamp',
         'co2_min',
         'co2_max',
         'co2_avg',
