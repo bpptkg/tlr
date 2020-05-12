@@ -16,3 +16,10 @@ def force_str(s, encoding='utf-8', errors='strict'):
     except UnicodeDecodeError as e:
         raise e
     return s
+
+
+def get_value_or_none(data, index):
+    try:
+        return data[index]
+    except IndexError:
+        return None
