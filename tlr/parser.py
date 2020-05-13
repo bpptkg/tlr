@@ -80,6 +80,9 @@ class BaseParser(object):
 
 
 class TParser(BaseParser):
+    """
+    Base temperature parser object.
+    """
 
     regex = re.compile(r'')
 
@@ -100,18 +103,35 @@ class T0Parser(TParser):
 
 
 class T1Parser(TParser):
+    """
+    Parser object for parsing telnet on tlr.models.Temperature1 model.
+
+    Note that there are no timestamp on telnet data. So we only parse
+    temperature value.
+    """
 
     regex = re.compile(r'.*#01\s(?P<data>.*)\r')
     fields = ['temperature', ]
 
 
 class T2Parser(BaseParser):
+    """
+    Parser object for parsing telnet on tlr.models.Temperature2 model.
+
+    Note that there are no timestamp on telnet data. So we only parse
+    temperature value.
+    """
 
     regex = re.compile(r'.*#02\s(?P<data>.*)\r')
     fields = ['temperature', ]
 
 
 class EParser(BaseParser):
+    """
+    Parser object for parsing telnet on tlr.models.Emission model.
+
+    Note that there are no timestamp on telnet data.
+    """
 
     regex = re.compile(r'.*TLR0101256\s(?P<data>.*)\r')
     fields = [
