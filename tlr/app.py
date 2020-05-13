@@ -1,4 +1,12 @@
 
+"""
+Main app module.
+
+It process line string from telnet data that contains certain character in
+string. Parsing process is done through regex. So, in one string, items matched
+may contain more than one results. Because one line string associated with one
+timestamp, we only insert the first result to the database.
+"""
 import datetime
 import logging
 import telnetlib
@@ -31,12 +39,15 @@ def process_temperature0(timestamp, line, **kwargs):
 
     logger.info('#03: %s', data)
 
+    if not data:
+        return
+
     if len(data) > 1:
-        payload = data[0]
+        payload = data[:1]
     else:
         payload = data
 
-    payload.update({'timestamp': timestamp})
+    payload[0].update({'timestamp': timestamp})
     queue.enqueue(bulk_insert, models.engine, models.Temperature0, payload)
 
     logger.info('#03: %s', payload)
@@ -61,12 +72,15 @@ def process_temperature1(timestamp, line, **kwargs):
 
     logger.info('#01: %s', data)
 
+    if not data:
+        return
+
     if len(data) > 1:
-        payload = data[0]
+        payload = data[:1]
     else:
         payload = data
 
-    payload.update({'timestamp': timestamp})
+    payload[0].update({'timestamp': timestamp})
     queue.enqueue(bulk_insert, models.engine, models.Temperature1, payload)
 
     logger.info('#01: %s', payload)
@@ -87,12 +101,15 @@ def process_temperature2(timestamp, line, **kwargs):
 
     logger.info('#02: %s', data)
 
+    if not data:
+        return
+
     if len(data) > 1:
-        payload = data[0]
+        payload = data[:1]
     else:
         payload = data
 
-    payload.update({'timestamp': timestamp})
+    payload[0].update({'timestamp': timestamp})
     queue.enqueue(bulk_insert, models.engine, models.Temperature2, payload)
 
     logger.info('#02: %s', payload)
@@ -117,12 +134,15 @@ def process_emission(timestamp, line, **kwargs):
 
     logger.info('LR0101256: %s', data)
 
+    if not data:
+        return
+
     if len(data) > 1:
-        payload = data[0]
+        payload = data[:1]
     else:
         payload = data
 
-    payload.update({'timestamp': timestamp})
+    payload[0].update({'timestamp': timestamp})
     queue.enqueue(bulk_insert, models.engine, models.Emission, payload)
 
     logger.info('LR0101256: %s', payload)
