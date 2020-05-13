@@ -13,6 +13,16 @@ logger = logging.getLogger(__name__)
 
 
 def process_temperature0(timestamp, line, **kwargs):
+    """
+    Process line string from telnet data that contains string #03.
+
+    Example telnet data: ::
+
+        'T#03 18.70,18.37,91.06,19.85,12.95\r\n \r\n \x8f\x08\x03'
+
+    Note that line from telnet data must be in ordinary string, not in raw
+    string.
+    """
     if '#03' not in line:
         return
 
@@ -33,6 +43,16 @@ def process_temperature0(timestamp, line, **kwargs):
 
 
 def process_temperature1(timestamp, line, **kwargs):
+    """
+    Process line string from telnet data that contains string #01.
+
+    Example telnet data: ::
+
+        'T#01 56.92,\r\nT#03 88.10,90.62,90.42,29.68,14.39\r\n \r\n C \xfc'
+
+    Note that line from telnet data must be in ordinary string, not in raw
+    string.
+    """
     if '#01' not in line:
         return
 
@@ -53,6 +73,12 @@ def process_temperature1(timestamp, line, **kwargs):
 
 
 def process_temperature2(timestamp, line, **kwargs):
+    """
+    Process line string from telnet data that contains string #02.
+
+    Note that line from telnet data must be in ordinary string, not in raw
+    string.
+    """
     if '#02' not in line:
         return
 
@@ -73,6 +99,16 @@ def process_temperature2(timestamp, line, **kwargs):
 
 
 def process_emission(timestamp, line, **kwargs):
+    """
+    Process line string from telnet data that contains string LR0101256.
+
+    Example telnet data: ::
+
+        'TLR0101256 +615.00 +689.00 +646.50 +30.00 +30.30 +30.15 +82.19 +83.04 +82.64 +12.05 \r\n \x80\x0c'
+
+    Note that line from telnet data must be in ordinary string, not in raw
+    string.
+    """
     if 'LR0101256' not in line:
         return
 
@@ -93,6 +129,10 @@ def process_emission(timestamp, line, **kwargs):
 
 
 def main():
+    """
+    Main app script. Listen to telnet server for incoming data and process it
+    immediately.
+    """
     now = datetime.datetime.now(pytz.timezone(settings.TIMEZONE))
 
     with telnetlib.Telnet(host=settings.TELNET_HOST,
