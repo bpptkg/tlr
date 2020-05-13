@@ -114,7 +114,7 @@ class T1Parser(TParser):
     fields = ['temperature', ]
 
 
-class T2Parser(BaseParser):
+class T2Parser(TParser):
     """
     Parser object for parsing telnet on tlr.models.Temperature2 model.
 
