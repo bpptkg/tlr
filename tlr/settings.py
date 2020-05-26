@@ -1,6 +1,9 @@
 import os
 import sys
+
 from decouple import config
+
+import sentry_sdk
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 if BASE_DIR not in sys.path:
@@ -21,6 +24,9 @@ TIMEZONE = config('TIMEZONE', default='Asia/Jakarta')
 LOGGING_ROOT = config(
     'LOGGING_ROOT', default=os.path.join(STORAGE_DIR, 'logs'))
 LOG_LEVEL = config('LOG_LEVEL', default='info').upper()
+
+if DEBUG:
+    LOG_LEVEL = 'DEBUG'
 
 LOGGING = {
     'version': 1,
@@ -62,3 +68,5 @@ LOGGING = {
         }
     }
 }
+
+sentry_sdk.init(config('SENTRY_DSN', default=''))
