@@ -36,7 +36,7 @@ def process_temperature0(timestamp, line, **kwargs):
     data_parser = parser.T0Parser()
     data = data_parser.parse_as_dict(line, delimiter=',')
 
-    logger.info('#03: %s', data)
+    logger.info('#03 parsing: %s', data)
 
     if not data:
         return
@@ -49,7 +49,7 @@ def process_temperature0(timestamp, line, **kwargs):
     payload[0].update({'timestamp': timestamp})
     bulk_insert(models.engine, models.Temperature0, payload)
 
-    logger.info('#03: %s', payload)
+    logger.info('#03 payload: %s', payload)
 
 
 def process_temperature1(timestamp, line, **kwargs):
@@ -69,7 +69,7 @@ def process_temperature1(timestamp, line, **kwargs):
     data_parser = parser.T1Parser()
     data = data_parser.parse_as_dict(line, delimiter=',')
 
-    logger.info('#01: %s', data)
+    logger.info('#01 parsing: %s', data)
 
     if not data:
         return
@@ -82,7 +82,7 @@ def process_temperature1(timestamp, line, **kwargs):
     payload[0].update({'timestamp': timestamp})
     bulk_insert(models.engine, models.Temperature1, payload)
 
-    logger.info('#01: %s', payload)
+    logger.info('#01 payload: %s', payload)
 
 
 def process_temperature2(timestamp, line, **kwargs):
@@ -98,7 +98,7 @@ def process_temperature2(timestamp, line, **kwargs):
     data_parser = parser.T2Parser()
     data = data_parser.parse_as_dict(line, delimiter=',')
 
-    logger.info('#02: %s', data)
+    logger.info('#02 parsing: %s', data)
 
     if not data:
         return
@@ -111,7 +111,7 @@ def process_temperature2(timestamp, line, **kwargs):
     payload[0].update({'timestamp': timestamp})
     bulk_insert(models.engine, models.Temperature2, payload)
 
-    logger.info('#02: %s', payload)
+    logger.info('#02 payload: %s', payload)
 
 
 def process_emission(timestamp, line, **kwargs):
@@ -131,7 +131,7 @@ def process_emission(timestamp, line, **kwargs):
     data_parser = parser.EParser()
     data = data_parser.parse_as_dict(line, delimiter=' ')
 
-    logger.info('LR0101256: %s', data)
+    logger.info('LR0101256 parsing: %s', data)
 
     if not data:
         return
@@ -144,7 +144,7 @@ def process_emission(timestamp, line, **kwargs):
     payload[0].update({'timestamp': timestamp})
     bulk_insert(models.engine, models.Emission, payload)
 
-    logger.info('LR0101256: %s', payload)
+    logger.info('LR0101256 payload: %s', payload)
 
 
 def main():
@@ -164,7 +164,7 @@ def main():
         line = utils.force_str(data, errors='backslashreplace')
 
         if len(line) >= constants.MIN_LINE_LENGTH_TO_PROCESS:
-            logger.info('raw: %s', line)
+            logger.info('raw: %s', str(data))
 
             process_temperature0(now, line)
             process_temperature1(now, line)
