@@ -2,7 +2,7 @@ def decode_string(s):
     try:
         return s.decode('utf-8')
     except (UnicodeDecodeError, AttributeError):
-        return str(s)
+        return s
 
 
 def force_str(s, encoding='utf-8', errors='strict'):

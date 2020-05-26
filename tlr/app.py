@@ -160,7 +160,7 @@ def main():
 
         data = utils.decode_string(
             tn.read_until(b'\n\n', settings.TELNET_TIMEOUT))
-        line = utils.force_str(data)
+        line = utils.force_str(data, errors='backslashreplace')
 
         if len(line) >= constants.MIN_LINE_LENGTH_TO_PROCESS:
             logger.info('raw: %s', line)
