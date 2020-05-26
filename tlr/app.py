@@ -156,6 +156,8 @@ def main():
 
     with telnetlib.Telnet(host=settings.TELNET_HOST,
                           port=settings.TELNET_PORT) as tn:
+        logger.info('Listening to the telnet server...')
+
         data = utils.decode_string(
             tn.read_until(b'\n\n', settings.TELNET_TIMEOUT))
         line = utils.force_str(data)
