@@ -18,6 +18,7 @@ MIGRATED = config('MIGRATED', default=True, cast=bool)
 TELNET_HOST = config('TELNET_HOST')
 TELNET_PORT = config('TELNET_PORT')
 TELNET_TIMEOUT = config('TELNET_TIMEOUT', default=300, cast=int)
+TELNET_CONNECT_TIMEOUT = config('TELNET_CONNECT_TIMEOUT', default=60, cast=int)
 
 TIMEZONE = config('TIMEZONE', default='Asia/Jakarta')
 

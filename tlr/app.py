@@ -155,7 +155,8 @@ def main():
     now = datetime.datetime.now(pytz.timezone(settings.TIMEZONE))
 
     with telnetlib.Telnet(host=settings.TELNET_HOST,
-                          port=settings.TELNET_PORT) as tn:
+                          port=settings.TELNET_PORT,
+                          timeout=settings.TELNET_CONNECT_TIMEOUT) as tn:
         logger.info('Listening to the telnet server...')
 
         data = utils.decode_string(
