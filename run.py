@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 
 import logging
+import logging.config
 import os
 import sys
-from logging.config import dictConfig
 
 from tlr.app import main
 from tlr.settings import LOGGING
@@ -15,7 +15,7 @@ if sys.version_info < (3, 6):
 
 
 def run_from_command_line():
-    dictConfig(LOGGING)
+    logging.config.dictConfig(LOGGING)
 
     try:
         main()
