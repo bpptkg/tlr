@@ -92,7 +92,7 @@ class TParser(BaseParser):
 
 class T0Parser(TParser):
 
-    regex = re.compile(r'.*#03\s(?P<data>.*)\r')
+    regex = re.compile(r'.*#03\s(?P<data>[0-9].*[.,].*)\r')
     fields = [
         'temperature1',
         'temperature2',
@@ -110,7 +110,7 @@ class T1Parser(TParser):
     temperature value.
     """
 
-    regex = re.compile(r'.*#01\s(?P<data>.*)\r')
+    regex = re.compile(r'.*#01\s(?P<data>[0-9].*[.,].*)\r')
     fields = ['temperature', ]
 
 
@@ -122,7 +122,7 @@ class T2Parser(TParser):
     temperature value.
     """
 
-    regex = re.compile(r'.*#02\s(?P<data>.*)\r')
+    regex = re.compile(r'.*#02\s(?P<data>[0-9].*[.,].*)\r')
     fields = ['temperature', ]
 
 
@@ -133,7 +133,7 @@ class EParser(BaseParser):
     Note that there are no timestamp on telnet data.
     """
 
-    regex = re.compile(r'.*TLR0101256\s(?P<data>.*)\r')
+    regex = re.compile(r'.*TLR0101256\s(?P<data>\+[0-9].*[.,].*)\r')
     fields = [
         'co2_min',
         'co2_max',
