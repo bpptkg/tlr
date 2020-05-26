@@ -21,6 +21,7 @@ def run_from_command_line():
         main()
     except Exception as e:
         logger.error(e)
+        raise e
 
     os.execv(__file__, sys.argv)
 
