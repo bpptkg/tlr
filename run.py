@@ -19,6 +19,8 @@ def run_from_command_line():
 
     try:
         main()
+    except ConnectionError:
+        pass
     except Exception as e:
         logger.error(e)
         raise e
