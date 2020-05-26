@@ -152,7 +152,6 @@ def main():
     Main app script. Listen to telnet server for incoming data and process it
     immediately.
     """
-    now = datetime.datetime.now(pytz.timezone(settings.TIMEZONE))
 
     with telnetlib.Telnet(host=settings.TELNET_HOST,
                           port=settings.TELNET_PORT,
@@ -166,6 +165,7 @@ def main():
         if len(line) >= constants.MIN_LINE_LENGTH_TO_PROCESS:
             logger.info('raw: %s', str(data))
 
+            now = datetime.datetime.now(pytz.timezone(settings.TIMEZONE))
             process_temperature0(now, line)
             process_temperature1(now, line)
             process_temperature2(now, line)
