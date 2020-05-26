@@ -14,7 +14,6 @@ import telnetlib
 import pytz
 
 from . import constants, models, parser, settings, utils
-from .jobs import queue
 from .ops import bulk_insert
 
 logger = logging.getLogger(__name__)
@@ -48,7 +47,7 @@ def process_temperature0(timestamp, line, **kwargs):
         payload = data
 
     payload[0].update({'timestamp': timestamp})
-    queue.enqueue(bulk_insert, models.engine, models.Temperature0, payload)
+    bulk_insert(models.engine, models.Temperature0, payload)
 
     logger.info('#03: %s', payload)
 
@@ -81,7 +80,7 @@ def process_temperature1(timestamp, line, **kwargs):
         payload = data
 
     payload[0].update({'timestamp': timestamp})
-    queue.enqueue(bulk_insert, models.engine, models.Temperature1, payload)
+    bulk_insert(models.engine, models.Temperature1, payload)
 
     logger.info('#01: %s', payload)
 
@@ -110,7 +109,7 @@ def process_temperature2(timestamp, line, **kwargs):
         payload = data
 
     payload[0].update({'timestamp': timestamp})
-    queue.enqueue(bulk_insert, models.engine, models.Temperature2, payload)
+    bulk_insert(models.engine, models.Temperature2, payload)
 
     logger.info('#02: %s', payload)
 
@@ -143,7 +142,7 @@ def process_emission(timestamp, line, **kwargs):
         payload = data
 
     payload[0].update({'timestamp': timestamp})
-    queue.enqueue(bulk_insert, models.engine, models.Emission, payload)
+    bulk_insert(models.engine, models.Emission, payload)
 
     logger.info('LR0101256: %s', payload)
 

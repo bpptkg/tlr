@@ -11,7 +11,6 @@ LOG_DIR = os.path.join(STORAGE_DIR, 'logs')
 
 DEBUG = config('DEBUG', default=False, cast=bool)
 DATABASE_ENGINE = config('DATABASE_ENGINE')
-REDIS_URL = config('REDIS_URL')
 MIGRATED = config('MIGRATED', default=True, cast=bool)
 TELNET_HOST = config('TELNET_HOST')
 TELNET_PORT = config('TELNET_PORT')
