@@ -10,3 +10,4 @@ __pycache__/
 *.py[co]
 .coverage
 .env
+run_daemon.sh
