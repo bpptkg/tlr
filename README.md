@@ -75,13 +75,25 @@ You can view Supervisord status by running this command:
 
 Finally, monitor your database if data has been stored.
 
-## Monitoring Errors
+## Monitoring for Errors
 
 If any error occurred, you can see the error from the log file in
 `storage/logs/tlr.log` (logging directory may be different if you use custom
 `LOGGING_ROOT`) or from
 [Sentry](https://sentry.io/organizations/bpptkg/issues/?project=5253584) web
 interface. Viewing from Sentry web is recommended.
+
+## Applying Code Updates
+
+First, tap into deployment server via `ssh` or any other ways. Then, pull
+updates from GitLab repository:
+
+    cd /path/to/tlr/
+    git pull
+
+Restart tlr service:
+
+    sudo supervisorctl restart tlr
 
 ## Developer Reference
 
