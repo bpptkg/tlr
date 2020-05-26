@@ -6,7 +6,7 @@
 System) data acquisition. It listen for data from telnet server, parse the data,
 and store it to the database server.
 
-## Guides
+## Deployment Guide
 
 Clone the project from GitLab repository server:
 
