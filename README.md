@@ -8,7 +8,7 @@ and store it to the database server.
 
 ## Guides
 
-Clone project from GitLab repository server:
+Clone the project from GitLab repository server:
 
     git clone https://gitlab.com/bpptkg/tlr.git
 
@@ -54,7 +54,7 @@ Edit `/etc/supervisor/conf.d/tlr.conf` according to your need:
 
     [program:tlr]
     directory=/path/to/tlr
-    command=command=/path/to/tlr/venv/bin/python /path/to/tlr/run.py
+    command=/path/to/tlr/venv/bin/python /path/to/tlr/run.py
     autostart=true
     autorestart=true
     stdout_logfile=/var/log/supervisor/tlr.log
@@ -66,8 +66,8 @@ Edit `/etc/supervisor/conf.d/tlr.conf` according to your need:
 
 Reread and update Supervisord configuration:
 
-    sudo supervisor reread
-    sudo supervisor update
+    sudo supervisorctl reread
+    sudo supervisorctl update
 
 You can view Supervisord status by running this command:
 
