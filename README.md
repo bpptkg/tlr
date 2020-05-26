@@ -52,19 +52,17 @@ Copy Supervisord tlr configuration from `supervisor/` directory:
 
 Edit `/etc/supervisor/conf.d/tlr.conf` according to your need:
 
-```
-[program:tlr]
-directory=/path/to/tlr
-command=/path/to/tlr/run.py
-autostart=true
-autorestart=true
-stdout_logfile=/var/log/supervisor/tlr.log
-stderr_logfile=/var/log/supervisor/tlr_error.log
-environment=LANG=en_US.UTF-8,LC_ALL=en_US.UTF-8
+    [program:tlr]
+    directory=/path/to/tlr
+    command=command=/path/to/tlr/venv/bin/python /path/to/tlr/run.py
+    autostart=true
+    autorestart=true
+    stdout_logfile=/var/log/supervisor/tlr.log
+    stderr_logfile=/var/log/supervisor/tlr_error.log
+    environment=LANG=en_US.UTF-8,LC_ALL=en_US.UTF-8
 
-[group:tlr]
-programs:tlr
-```
+    [group:tlr]
+    programs:tlr
 
 Reread and update Supervisord configuration:
 
@@ -101,7 +99,9 @@ running `pytest` command:
 Main script entry point is `run.py`. You can run the script by executing this
 command:
 
-    ./run.py
+    python run.py
+
+Note that you have to run the script within your Python virtual environment.
 
 ## Support
 
