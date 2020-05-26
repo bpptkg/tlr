@@ -1,8 +1,8 @@
 def decode_string(s):
     try:
         return s.decode('utf-8')
-    except AttributeError:
-        return s
+    except (UnicodeDecodeError, AttributeError):
+        return str(s)
 
 
 def force_str(s, encoding='utf-8', errors='strict'):

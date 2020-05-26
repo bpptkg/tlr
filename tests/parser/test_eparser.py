@@ -3,7 +3,7 @@ import unittest
 from tlr.fixtures import emission
 from tlr.parser import EParser
 from tlr.tests.utils import format_as_str, list_to_dict, stringify_dict
-from tlr.utils import get_value_or_none
+from tlr.utils import decode_string, get_value_or_none
 
 
 class ParserTest(unittest.TestCase):
@@ -12,7 +12,8 @@ class ParserTest(unittest.TestCase):
     def test_parser_as_list(self):
         data_parser = EParser()
         for index, string in enumerate(emission.raw_data):
-            data = data_parser.parse_as_list(string, delimiter=' ')
+            data = data_parser.parse_as_list(
+                decode_string(string), delimiter=' ')
 
             for i, item in enumerate(data):
                 first = format_as_str(item)
@@ -22,7 +23,8 @@ class ParserTest(unittest.TestCase):
     def test_parse_as_dict(self):
         data_parser = EParser()
         for index, string in enumerate(emission.raw_data):
-            data = data_parser.parse_as_dict(string, delimiter=' ')
+            data = data_parser.parse_as_dict(
+                decode_string(string), delimiter=' ')
 
             for i, item in enumerate(data):
                 first = stringify_dict(item)
