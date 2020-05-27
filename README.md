@@ -64,6 +64,13 @@ Edit `/etc/supervisor/conf.d/tlr.conf` according to your need:
     [group:tlr]
     programs:tlr
 
+In the configuration above, we start the service using the command:
+
+    bash -c "source /path/to/tlr/venv/bin/activate && /path/to/tlr/run.py"
+
+It will start the service within Python virtual environment and make sure that
+we have only one process running.
+
 Reread and update Supervisord configuration:
 
     sudo supervisorctl reread
@@ -98,6 +105,12 @@ updates from GitLab repository:
 Restart tlr service:
 
     sudo supervisorctl restart tlr
+
+If you ever modify tlr configuration in `/etc/supervisor/conf.d/tlr.conf`, you
+have to reread and update the service:
+
+    sudo supervisorctl reread
+    sudo supervisorctl update
 
 ## Developer Reference
 
