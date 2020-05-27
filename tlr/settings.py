@@ -11,6 +11,7 @@ if BASE_DIR not in sys.path:
 
 STORAGE_DIR = os.path.join(BASE_DIR, 'storage')
 LOG_DIR = os.path.join(STORAGE_DIR, 'logs')
+DATA_DIR = os.path.join(STORAGE_DIR, 'data')
 
 DEBUG = config('DEBUG', default=False, cast=bool)
 DATABASE_ENGINE = config('DATABASE_ENGINE')
@@ -71,3 +72,5 @@ LOGGING = {
 }
 
 sentry_sdk.init(config('SENTRY_DSN', default=''))
+
+LOCKFILE = os.path.join(DATA_DIR, 'tlr.lock')

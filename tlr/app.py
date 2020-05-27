@@ -15,6 +15,7 @@ import pytz
 
 from . import constants, models, parser, settings, utils
 from .ops import bulk_insert
+from .singleton import SingleInstance
 
 logger = logging.getLogger(__name__)
 
@@ -147,27 +148,36 @@ def process_emission(timestamp, line, **kwargs):
     logger.info('LR0101256 payload: %s', payload)
 
 
-def main():
+class App(SingleInstance):
     """
-    Main app script. Listen to telnet server for incoming data and process it
-    immediately.
+    TLR main app class.
+
+    We run the app in the single instance mode so that only one process listen
+    to the telnet server and process the data.
     """
 
-    with telnetlib.Telnet(host=settings.TELNET_HOST,
-                          port=settings.TELNET_PORT,
-                          timeout=settings.TELNET_CONNECT_TIMEOUT) as tn:
-        logger.info('Listening to telnet server at %s:%s',
-                    settings.TELNET_HOST, settings.TELNET_PORT)
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
 
-        data = utils.decode_string(
-            tn.read_until(b'\n\n', settings.TELNET_TIMEOUT))
-        line = utils.force_str(data, errors='backslashreplace')
+    def run(self):
+        """
+        Listen to telnet server for incoming data and process it immediately.
+        """
+        with telnetlib.Telnet(host=settings.TELNET_HOST,
+                              port=settings.TELNET_PORT,
+                              timeout=settings.TELNET_CONNECT_TIMEOUT) as tn:
+            logger.info('Listening to telnet server at %s:%s',
+                        settings.TELNET_HOST, settings.TELNET_PORT)
 
-        if len(line) >= constants.MIN_LINE_LENGTH_TO_PROCESS:
-            logger.info('raw: %s', str(data))
+            data = utils.decode_string(
+                tn.read_until(b'\n\n', settings.TELNET_TIMEOUT))
+            line = utils.force_str(data, errors='backslashreplace')
 
-            now = datetime.datetime.now(pytz.timezone(settings.TIMEZONE))
-            process_temperature0(now, line)
-            process_temperature1(now, line)
-            process_temperature2(now, line)
-            process_emission(now, line)
+            if len(line) >= constants.MIN_LINE_LENGTH_TO_PROCESS:
+                logger.info('raw: %s', str(data))
+
+                now = datetime.datetime.now(pytz.timezone(settings.TIMEZONE))
+                process_temperature0(now, line)
+                process_temperature1(now, line)
+                process_temperature2(now, line)
+                process_emission(now, line)

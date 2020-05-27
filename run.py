@@ -5,8 +5,8 @@ import logging.config
 import os
 import sys
 
-from tlr.app import main
-from tlr.settings import LOGGING
+from tlr.app import App
+from tlr.settings import LOCKFILE, LOGGING
 
 logger = logging.getLogger(__name__)
 
@@ -18,7 +18,8 @@ def run_from_command_line():
     logging.config.dictConfig(LOGGING)
 
     try:
-        main()
+        app = App(lockfile=LOCKFILE)
+        app.run()
     except ConnectionError:
         pass
     except Exception as e:
