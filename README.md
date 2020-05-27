@@ -119,6 +119,10 @@ command:
 
 Note that you have to run the script within your Python virtual environment.
 
+## Contributing
+
+See `CONTRIBUTING.md` to learn how to contribute to this project.
+
 ## Support
 
 This project is maintained by Indra Rudianto. If you have any question about
