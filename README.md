@@ -42,21 +42,6 @@ executing this command:
 
     ./bin/migrate
 
-Create daemon service script from `run_daemon.sh.example`:
-
-    cp run_daemon.sh.example run_daemon.sh
-
-Edit `run_daemon.sh` according to your settings:
-
-    #!/bin/bash
-
-    source /path/to/venv/bin/activate
-    /path/to/venv/bin/python /path/to/tlr/run.py
-
-Then, make the script executable:
-
-    chmod +x run_daemon.sh
-
 Install Supervisord. We will use it to monitor script daemon process:
 
     sudo apt install supervisor
@@ -69,7 +54,7 @@ Edit `/etc/supervisor/conf.d/tlr.conf` according to your need:
 
     [program:tlr]
     directory=/path/to/tlr
-    command=/path/to/run_daemon.sh
+    command=bash -c "source /path/to/tlr/venv/bin/activate && /path/to/tlr/run.py"
     autostart=true
     autorestart=true
     stdout_logfile=/var/log/supervisor/tlr.log
