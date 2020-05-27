@@ -3,8 +3,8 @@
 ## Overview
 
 `tlr` is a package that act as a service for VOGAMOS (Volcanic Gas Monitoring
-System) data acquisition. It listen for data from telnet server, parse the data,
-and store it to the database server.
+System) data acquisition. It listens for data from telnet server, parse the
+data, and store it to the database server.
 
 ## Deployment Guide
 
@@ -94,9 +94,13 @@ Finally, monitor your database if data has been stored.
 
 If any error occurred, you can see the error from the log file in
 `storage/logs/tlr.log` (logging directory may be different if you use custom
-`LOGGING_ROOT`) or from
-[Sentry](https://sentry.io/organizations/bpptkg/issues/?project=5253584) web
-interface. Viewing from Sentry web is recommended.
+`LOGGING_ROOT`), from Supervisord log (`/var/log/supervisor/tlr_error.log`), or
+from [Sentry](https://sentry.io/organizations/bpptkg/issues/?project=5253584)
+web interface.
+
+Viewing error logs from Supervisord is basically good to debug system-related
+errors. In addition to that, viewing from Sentry web is recommended to track
+errors in the application level.
 
 ## Applying Code Updates
 
