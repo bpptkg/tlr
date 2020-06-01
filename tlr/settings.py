@@ -1,9 +1,9 @@
 import os
 import sys
 
-from decouple import config
-
 import sentry_sdk
+from decouple import config
+from sentry_sdk.integrations.sqlalchemy import SqlalchemyIntegration
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 if BASE_DIR not in sys.path:
@@ -71,6 +71,9 @@ LOGGING = {
     }
 }
 
-sentry_sdk.init(config('SENTRY_DSN', default=''))
+sentry_sdk.init(
+    dsn=config('SENTRY_DSN', default=''),
+    integrations=[SqlalchemyIntegration(), ]
+)
 
 LOCKFILE = os.path.join(DATA_DIR, 'tlr.lock')
