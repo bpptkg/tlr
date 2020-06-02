@@ -132,6 +132,38 @@ command:
 
 Note that you have to run the script within your Python virtual environment.
 
+## Installing tlr Library
+
+If you want to access tlr API, you can install the package from PyPI:
+
+    pip install -U tlr
+
+Example:
+
+```python
+from tlr.parser import T1Parser
+from tlr.utils import force_str
+
+# Data from telner server
+bytes_data = b'T#01 56.92,\r\nT#03 88.10,90.62,90.42,29.68,14.39\r\n \r\n C \xfc'
+
+# Decode raw data to ordinary string format
+str_data = force_str(bytes_data, errors='backslashreplace')
+
+# Create a parser object
+data_parser = T1Parser()
+
+# Parse the data
+cleaned_data = data_parser.parse_as_dict(str_data)
+
+# Print cleaned data
+print(cleaned_data)
+```
+
+Output:
+
+    [{'temperature': 56.92}]
+
 ## Contributing
 
 See `CONTRIBUTING.md` to learn how to contribute to this project.
