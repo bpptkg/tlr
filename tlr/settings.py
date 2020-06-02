@@ -1,17 +1,25 @@
 import os
 import sys
+import tempfile
 
 import sentry_sdk
 from decouple import config
 from sentry_sdk.integrations.sqlalchemy import SqlalchemyIntegration
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = config(
+    'BASE_DIR',
+    default=os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+)
 if BASE_DIR not in sys.path:
     sys.path.append(BASE_DIR)
 
-STORAGE_DIR = os.path.join(BASE_DIR, 'storage')
-LOG_DIR = os.path.join(STORAGE_DIR, 'logs')
-DATA_DIR = os.path.join(STORAGE_DIR, 'data')
+STORAGE_DIR = config('STORAGE_DIR', default=os.path.join(BASE_DIR, 'storage'))
+if not os.path.isdir(STORAGE_DIR):
+    STORAGE_DIR = BASE_DIR
+
+DATA_DIR = config('DATA_DIR', default=os.path.join(STORAGE_DIR, 'data'))
+if not os.path.isdir(DATA_DIR):
+    DATA_DIR = tempfile.gettempdir()
 
 DEBUG = config('DEBUG', default=False, cast=bool)
 DATABASE_ENGINE = config('DATABASE_ENGINE')
@@ -25,6 +33,9 @@ TIMEZONE = config('TIMEZONE', default='Asia/Jakarta')
 
 LOGGING_ROOT = config(
     'LOGGING_ROOT', default=os.path.join(STORAGE_DIR, 'logs'))
+if not os.path.isdir(LOGGING_ROOT):
+    LOGGING_ROOT = tempfile.gettempdir()
+
 LOG_LEVEL = config('LOG_LEVEL', default='info').upper()
 
 if DEBUG:
