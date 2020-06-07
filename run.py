@@ -20,7 +20,9 @@ def run_from_command_line():
     try:
         app = App(lockfile=LOCKFILE)
         app.run()
-    except ConnectionError:
+    except (ConnectionError, OSError) as e:
+        # Pass connection error and no route to host error. Log on debug only.
+        logger.debug(e)
         pass
     except Exception as e:
         logger.error(e)
