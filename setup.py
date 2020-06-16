@@ -1,10 +1,14 @@
 #!/usr/bin/env python
 
 import os
+import sys
 
 from setuptools import setup, find_packages
 
 __version__ = '2.0.0'
+
+if sys.version_info < (3, 6):
+    sys.exit('Error: tlr requires Python 3.6 or above')
 
 
 def read(filename):
