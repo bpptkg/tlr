@@ -1,6 +1,7 @@
 import re
 import abc
 import logging
+from collections import Callable
 
 from .utils import force_str, get_value_or_none
 
@@ -43,7 +44,7 @@ class BaseParser(object):
                 if not field:
                     continue
 
-                if converter is not None:
+                if isinstance(converter, Callable):
                     try:
                         value = converter(field)
                     except ValueError as e:
