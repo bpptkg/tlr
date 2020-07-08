@@ -28,6 +28,10 @@ TELNET_HOST = config('TELNET_HOST', default='localhost')
 TELNET_PORT = config('TELNET_PORT', default=23, cast=int)
 TELNET_TIMEOUT = config('TELNET_TIMEOUT', default=300, cast=int)
 TELNET_CONNECT_TIMEOUT = config('TELNET_CONNECT_TIMEOUT', default=60, cast=int)
+TELNET_RECONNECT_LIMIT = config(
+    'TELNET_RECONNECT_LIMIT', default=10, cast=int)
+TELNET_RECONNECT_TIMEOUT = config(
+    'TELNET_RECONNECT_TIMEOUT', default=5, cast=int)
 
 TIMEZONE = config('TIMEZONE', default='Asia/Jakarta')
 
