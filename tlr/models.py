@@ -1,10 +1,15 @@
 from sqlalchemy import Column, DateTime, Float, create_engine
 from sqlalchemy.ext.automap import automap_base
+from sqlalchemy.pool import NullPool
 
 from . import settings
 
+
 Base = automap_base()
-engine = create_engine(settings.DATABASE_ENGINE)
+
+# Use NullPool to prevent telnet connection errors creating too many database
+# connection. See isses #1 (https://gitlab.com/bpptkg/tlr/-/issues/1).
+engine = create_engine(settings.DATABASE_ENGINE, poolclass=NullPool)
 
 
 class Temperature0(Base):
