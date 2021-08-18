@@ -8,9 +8,9 @@ data, and store it to the database server.
 
 ## Deployment Guide
 
-Clone the project from GitLab repository server:
+Clone the project from GitHub repository server:
 
-    git clone https://gitlab.com/bpptkg/tlr.git
+    git clone https://github.com/bpptkg/tlr.git
 
 Then, change directory to the tlr root directory:
 
@@ -97,7 +97,7 @@ errors in the application level.
 ## Applying Code Updates
 
 First, tap into deployment server via `ssh` or any other ways. Then, pull
-updates from GitLab repository:
+updates from GitHub repository:
 
     cd /path/to/tlr/
     git pull
@@ -119,7 +119,7 @@ development package requirements:
 
     pip install -r dev-requirements.txt
 
-Before submitting your changes to our GitLab repository, write unit test in the
+Before submitting your changes to our GitHub repository, write unit test in the
 `tests/` directory. You can run all unit tests to see if your test has passed by
 running `pytest` command:
 
@@ -168,13 +168,8 @@ Output:
 
 See `CONTRIBUTING.md` to learn how to contribute to this project.
 
-## Support
-
-This project is maintained by Indra Rudianto. If you have any question about
-this project, you can contact him at <indrarudianto.official@gmail.com>.
-
 ## License
 
 By contributing to the project, you agree that your contributions will be
 licensed under its MIT license. See
-[LICENSE](https://gitlab.com/bpptkg/tlr/-/blob/master/LICENSE) for details.
+[LICENSE](https://github.com/bpptkg/tlr/blob/master/LICENSE) for details.
