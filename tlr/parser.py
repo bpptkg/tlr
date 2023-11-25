@@ -24,10 +24,7 @@ class BaseParser(object):
     def parse(self, s, **kwargs):
         pass
 
-    def parse_as_list(self, s,
-                      delimiter=',',
-                      converter=float,
-                      **kwargs):
+    def parse_as_list(self, s, delimiter=",", converter=float, **kwargs):
         """
         Parse string s as list. Empty value will be discarded. If converter is
         not None, each value in the list will be converted using the converter
@@ -66,16 +63,14 @@ class BaseParser(object):
         matched in the regex.
         """
         if not self.fields:
-            raise ParserError(
-                'Parsing as dictionary requires fields to be set')
+            raise ParserError("Parsing as dictionary requires fields to be set")
 
         cleaned_data = []
         data = self.parse_as_list(s, **kwargs)
         for item in data:
-            d = dict([
-                (k, get_value_or_none(item, i))
-                for i, k in enumerate(self.fields)
-            ])
+            d = dict(
+                [(k, get_value_or_none(item, i)) for i, k in enumerate(self.fields)]
+            )
             cleaned_data.append(d)
         return cleaned_data
 
@@ -85,21 +80,20 @@ class TParser(BaseParser):
     Base temperature parser object.
     """
 
-    regex = re.compile(r'')
+    regex = re.compile(r"")
 
     def parse(self, s, **kwargs):
         return self.regex.findall(s)
 
 
 class T0Parser(TParser):
-
-    regex = re.compile(r'.*#03\s(?P<data>[0-9].*[.,].*)\r')
+    regex = re.compile(r".*#03\s(?P<data>[0-9].*[.,].*)\r")
     fields = [
-        'temperature1',
-        'temperature2',
-        'temperature3',
-        'temperature4',
-        'battery_voltage',
+        "temperature1",
+        "temperature2",
+        "temperature3",
+        "temperature4",
+        "battery_voltage",
     ]
 
 
@@ -111,8 +105,10 @@ class T1Parser(TParser):
     temperature value.
     """
 
-    regex = re.compile(r'.*#01\s(?P<data>[0-9].*[.,].*)\r')
-    fields = ['temperature', ]
+    regex = re.compile(r".*#01\s(?P<data>[0-9].*[.,].*)\r")
+    fields = [
+        "temperature",
+    ]
 
 
 class T2Parser(TParser):
@@ -123,8 +119,10 @@ class T2Parser(TParser):
     temperature value.
     """
 
-    regex = re.compile(r'.*#02\s(?P<data>[0-9].*[.,].*)\r')
-    fields = ['temperature', ]
+    regex = re.compile(r".*#02\s(?P<data>[0-9].*[.,].*)\r")
+    fields = [
+        "temperature",
+    ]
 
 
 class EParser(BaseParser):
@@ -134,18 +132,18 @@ class EParser(BaseParser):
     Note that there are no timestamp on telnet data.
     """
 
-    regex = re.compile(r'.*TLR0101256\s(?P<data>\+[0-9].*[.,].*)\r')
+    regex = re.compile(r".*TLR0101256\s(?P<data>\+[0-9].*[.,].*)\r")
     fields = [
-        'co2_min',
-        'co2_max',
-        'co2_avg',
-        'temperature_min',
-        'temperature_max',
-        'temperature_avg',
-        'humidity_min',
-        'humidity_max',
-        'humidity_avg',
-        'input_battery_voltage',
+        "co2_min",
+        "co2_max",
+        "co2_avg",
+        "temperature_min",
+        "temperature_max",
+        "temperature_avg",
+        "humidity_min",
+        "humidity_max",
+        "humidity_avg",
+        "input_battery_voltage",
     ]
 
     def parse(self, s, **kwargs):

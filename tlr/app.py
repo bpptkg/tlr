@@ -1,4 +1,3 @@
-
 """
 Main app module.
 
@@ -31,13 +30,13 @@ def process_temperature0(timestamp, line, **kwargs):
     Note that line from telnet data must be in ordinary string, not in raw
     string.
     """
-    if '#03' not in line:
+    if "#03" not in line:
         return
 
     data_parser = parser.T0Parser()
-    data = data_parser.parse_as_dict(line, delimiter=',')
+    data = data_parser.parse_as_dict(line, delimiter=",")
 
-    logger.info('#03 parsing: %s', data)
+    logger.info("#03 parsing: %s", data)
 
     if not data:
         return
@@ -47,10 +46,10 @@ def process_temperature0(timestamp, line, **kwargs):
     else:
         payload = data
 
-    payload[0].update({'timestamp': timestamp})
+    payload[0].update({"timestamp": timestamp})
     bulk_insert(models.engine, models.Temperature0, payload)
 
-    logger.info('#03 payload: %s', payload)
+    logger.info("#03 payload: %s", payload)
 
 
 def process_temperature1(timestamp, line, **kwargs):
@@ -64,13 +63,13 @@ def process_temperature1(timestamp, line, **kwargs):
     Note that line from telnet data must be in ordinary string, not in raw
     string.
     """
-    if '#01' not in line:
+    if "#01" not in line:
         return
 
     data_parser = parser.T1Parser()
-    data = data_parser.parse_as_dict(line, delimiter=',')
+    data = data_parser.parse_as_dict(line, delimiter=",")
 
-    logger.info('#01 parsing: %s', data)
+    logger.info("#01 parsing: %s", data)
 
     if not data:
         return
@@ -80,10 +79,10 @@ def process_temperature1(timestamp, line, **kwargs):
     else:
         payload = data
 
-    payload[0].update({'timestamp': timestamp})
+    payload[0].update({"timestamp": timestamp})
     bulk_insert(models.engine, models.Temperature1, payload)
 
-    logger.info('#01 payload: %s', payload)
+    logger.info("#01 payload: %s", payload)
 
 
 def process_temperature2(timestamp, line, **kwargs):
@@ -93,13 +92,13 @@ def process_temperature2(timestamp, line, **kwargs):
     Note that line from telnet data must be in ordinary string, not in raw
     string.
     """
-    if '#02' not in line:
+    if "#02" not in line:
         return
 
     data_parser = parser.T2Parser()
-    data = data_parser.parse_as_dict(line, delimiter=',')
+    data = data_parser.parse_as_dict(line, delimiter=",")
 
-    logger.info('#02 parsing: %s', data)
+    logger.info("#02 parsing: %s", data)
 
     if not data:
         return
@@ -109,10 +108,10 @@ def process_temperature2(timestamp, line, **kwargs):
     else:
         payload = data
 
-    payload[0].update({'timestamp': timestamp})
+    payload[0].update({"timestamp": timestamp})
     bulk_insert(models.engine, models.Temperature2, payload)
 
-    logger.info('#02 payload: %s', payload)
+    logger.info("#02 payload: %s", payload)
 
 
 def process_emission(timestamp, line, **kwargs):
@@ -126,13 +125,13 @@ def process_emission(timestamp, line, **kwargs):
     Note that line from telnet data must be in ordinary string, not in raw
     string.
     """
-    if 'LR0101256' not in line:
+    if "LR0101256" not in line:
         return
 
     data_parser = parser.EParser()
-    data = data_parser.parse_as_dict(line, delimiter=' ')
+    data = data_parser.parse_as_dict(line, delimiter=" ")
 
-    logger.info('LR0101256 parsing: %s', data)
+    logger.info("LR0101256 parsing: %s", data)
 
     if not data:
         return
@@ -142,10 +141,10 @@ def process_emission(timestamp, line, **kwargs):
     else:
         payload = data
 
-    payload[0].update({'timestamp': timestamp})
+    payload[0].update({"timestamp": timestamp})
     bulk_insert(models.engine, models.Emission, payload)
 
-    logger.info('LR0101256 payload: %s', payload)
+    logger.info("LR0101256 payload: %s", payload)
 
 
 class App(SingleInstance):
@@ -163,18 +162,22 @@ class App(SingleInstance):
         """
         Listen to telnet server for incoming data and process it immediately.
         """
-        with telnetlib.Telnet(host=settings.TELNET_HOST,
-                              port=settings.TELNET_PORT,
-                              timeout=settings.TELNET_CONNECT_TIMEOUT) as tn:
-            logger.info('Listening to telnet server at %s:%s',
-                        settings.TELNET_HOST, settings.TELNET_PORT)
+        with telnetlib.Telnet(
+            host=settings.TELNET_HOST,
+            port=settings.TELNET_PORT,
+            timeout=settings.TELNET_CONNECT_TIMEOUT,
+        ) as tn:
+            logger.info(
+                "Listening to telnet server at %s:%s",
+                settings.TELNET_HOST,
+                settings.TELNET_PORT,
+            )
 
-            data = utils.decode_string(
-                tn.read_until(b'\n\n', settings.TELNET_TIMEOUT))
-            line = utils.force_str(data, errors='backslashreplace')
+            data = utils.decode_string(tn.read_until(b"\n\n", settings.TELNET_TIMEOUT))
+            line = utils.force_str(data, errors="backslashreplace")
 
             if len(line) >= constants.MIN_LINE_LENGTH_TO_PROCESS:
-                logger.info('raw: %s', str(data))
+                logger.info("raw: %s", str(data))
 
                 now = datetime.datetime.now(pytz.timezone(settings.TIMEZONE))
                 process_temperature0(now, line)

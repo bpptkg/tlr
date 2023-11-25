@@ -13,7 +13,8 @@ class ParserTest(unittest.TestCase):
         data_parser = EParser()
         for index, string in enumerate(emission.raw_data):
             data = data_parser.parse_as_list(
-                force_str(string, errors='backslashreplace'), delimiter=' ')
+                force_str(string, errors="backslashreplace"), delimiter=" "
+            )
 
             for i, item in enumerate(emission.clean_data[index]):
                 first = format_as_str(data[i])
@@ -24,14 +25,14 @@ class ParserTest(unittest.TestCase):
         data_parser = EParser()
         for index, string in enumerate(emission.raw_data):
             data = data_parser.parse_as_dict(
-                force_str(string, errors='backslashreplace'), delimiter=' ')
+                force_str(string, errors="backslashreplace"), delimiter=" "
+            )
 
             for i, item in enumerate(emission.clean_data[index]):
                 first = stringify_dict(data[i])
-                second = list_to_dict(
-                    emission.clean_data[index][i], data_parser.fields)
+                second = list_to_dict(emission.clean_data[index][i], data_parser.fields)
                 self.assertDictEqual(first, second)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()
